@@ -10,6 +10,20 @@ jobs:
   build-and-test:
     runs-on: ubuntu-latest
 
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - service: order-service
+            module: order-service/order-domain/order-application-service
+          # Add new services here, e.g.:
+          # - service: customer-service
+          #   module: customer-service/customer-domain/customer-application-service
+          # - service: restaurant-service
+          #   module: restaurant-service/restaurant-domain/restaurant-application-service
+
+    name: Test / ${{ matrix.service }}
+
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -24,7 +38,7 @@ jobs:
       - name: Build and run unit tests
         run: |
           mvn test \
-            -pl order-service/order-domain/order-application-service \
+            -pl ${{ matrix.module }} \
             -am \
             --batch-mode \
             --no-transfer-progress
@@ -33,6 +47,6 @@ jobs:
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: surefire-reports
-          path: order-service/order-domain/order-application-service/target/surefire-reports/
+          name: surefire-reports-${{ matrix.service }}
+          path: ${{ matrix.module }}/target/surefire-reports/
           retention-days: 7
