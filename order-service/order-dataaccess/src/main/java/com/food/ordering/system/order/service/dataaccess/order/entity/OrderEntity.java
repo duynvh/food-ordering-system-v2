@@ -5,15 +5,21 @@ import java.util.List;
 import java.util.Objects;
 import java.util.UUID;
 
-import javax.persistence.CascadeType;
-import javax.persistence.Entity;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
-import javax.persistence.Id;
-import javax.persistence.OneToMany;
-import javax.persistence.OneToOne;
-import javax.persistence.Table;
+import org.hibernate.annotations.JdbcType;
+import org.hibernate.annotations.JdbcTypeCode;
+import org.hibernate.type.SqlTypes;
 
+import jakarta.persistence.CascadeType;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
+import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
+import jakarta.persistence.OneToOne;
+import jakarta.persistence.Table;
+
+import com.food.ordering.system.domain.valueobject.OrderPreferences;
 import com.food.ordering.system.domain.valueobject.OrderStatus;
 
 import lombok.AllArgsConstructor;
@@ -39,6 +45,10 @@ public class OrderEntity {
 
 	@Enumerated(EnumType.STRING)
 	private OrderStatus orderStatus;
+
+	@JdbcTypeCode(SqlTypes.JSON)
+	@Column(name = "order_preferences")
+	private OrderPreferences orderPreferences;
 	private String failureMessages;
 
 	@OneToOne(mappedBy = "order", cascade = CascadeType.ALL)

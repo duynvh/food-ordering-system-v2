@@ -1,8 +1,10 @@
 package com.food.ordering.system.kafka.producer.service.impl;
 
 import java.io.Serializable;
+import java.util.concurrent.CompletableFuture;
+import java.util.function.BiConsumer;
 
-import javax.annotation.PreDestroy;
+import jakarta.annotation.PreDestroy;
 
 import org.apache.avro.specific.SpecificRecordBase;
 import org.springframework.kafka.KafkaException;
@@ -28,11 +30,11 @@ public class KafkaProducerImpl<K extends Serializable, V extends SpecificRecordB
 
 	@Override
 	public void send(final String topicName, final K key, final V message,
-			final ListenableFutureCallback<SendResult<K, V>> callback) {
+			final BiConsumer<SendResult<K, V>, Throwable> callback) {
 		log.info("Sending message={} to topic={}", message, topicName);
 		try {
-			ListenableFuture<SendResult<K, V>> kafkaResultFuture = kafkaTemplate.send(topicName, key, message);
-			kafkaResultFuture.addCallback(callback);
+			CompletableFuture<SendResult<K, V>> kafkaResultFuture = kafkaTemplate.send(topicName, key, message);
+			kafkaResultFuture.whenComplete(callback);
 		} catch (KafkaException e) {
 			log.error("Error on kafka producer with key: {}, message: {}, and exception: {}", key, message, e.getMessage());
 			throw new KafkaProducerException("Error on kafka producer with key: " + key + " and message: " + message);

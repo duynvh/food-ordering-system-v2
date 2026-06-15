@@ -1,6 +1,6 @@
 package com.food.ordering.system.order.service.domain.ports.input.service;
 
-import javax.validation.Valid;
+import jakarta.validation.Valid;
 
 import com.food.ordering.system.order.service.domain.dto.create.CreateOrderCommand;
 import com.food.ordering.system.order.service.domain.dto.create.CreateOrderResponse;

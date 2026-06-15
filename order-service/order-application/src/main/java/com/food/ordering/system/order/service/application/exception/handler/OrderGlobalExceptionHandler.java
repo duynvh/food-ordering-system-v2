@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 
 import com.food.ordering.system.application.handler.ErrorDTO;
 import com.food.ordering.system.application.handler.GlobalExceptionHandler;
+import com.food.ordering.system.order.service.ai.exception.AIOrderNoteInterpreterException;
 import com.food.ordering.system.order.service.domain.exception.OrderDomainException;
 import com.food.ordering.system.order.service.domain.exception.OrderNotFoundException;
 
@@ -35,6 +36,17 @@ public class OrderGlobalExceptionHandler extends GlobalExceptionHandler {
 		return ErrorDTO.builder()
 				.code(HttpStatus.NOT_FOUND.getReasonPhrase())
 				.message(orderNotFoundException.getMessage())
+				.build();
+	}
+
+	@ResponseBody
+	@ExceptionHandler(value = { AIOrderNoteInterpreterException.class})
+	@ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
+	public ErrorDTO handleException(AIOrderNoteInterpreterException aiOrderNoteInterpreterException) {
+		log.error(aiOrderNoteInterpreterException.getMessage(), aiOrderNoteInterpreterException);
+		return ErrorDTO.builder()
+				.code(HttpStatus.INTERNAL_SERVER_ERROR.getReasonPhrase())
+				.message(aiOrderNoteInterpreterException.getMessage())
 				.build();
 	}
 }
