@@ -10,15 +10,13 @@ import com.food.ordering.system.order.service.domain.event.OrderCreatedEvent;
 import com.food.ordering.system.order.service.domain.event.OrderPaidEvent;
 
 public interface OrderDomainService {
-	OrderCreatedEvent validateAndInitiateOrder(Order order, Restaurant restaurant,
-			final DomainEventPublisher<OrderCreatedEvent> orderCreatedEventDomainEventPublisher);
+	OrderCreatedEvent validateAndInitiateOrder(Order order, Restaurant restaurant);
 
-	OrderPaidEvent payOrder(Order order, final DomainEventPublisher<OrderPaidEvent> orderPaidEventDomainEventPublisher);
+	OrderPaidEvent payOrder(Order order);
 
 	void approveOrder(Order order);
 
-	OrderCancelledEvent cancelOrderPayment(Order order, List<String> failureMessages,
-			final DomainEventPublisher<OrderCancelledEvent> orderCancelledEventDomainEventPublisher);
+	OrderCancelledEvent cancelOrderPayment(Order order, List<String> failureMessages);
 
 	void cancelOrder(Order order, List<String> failureMessages);
 }

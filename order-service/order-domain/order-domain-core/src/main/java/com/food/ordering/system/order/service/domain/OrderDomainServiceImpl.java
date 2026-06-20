@@ -20,22 +20,20 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class OrderDomainServiceImpl implements OrderDomainService {
 	@Override
-	public OrderCreatedEvent validateAndInitiateOrder(final Order order, final Restaurant restaurant,
-			final DomainEventPublisher<OrderCreatedEvent> orderCreatedEventDomainEventPublisher) {
+	public OrderCreatedEvent validateAndInitiateOrder(final Order order, final Restaurant restaurant) {
 		validateRestaurant(restaurant);
 		setOrderProductInformation(order, restaurant);
 		order.validateOrder();
 		order.initializeOrder();
 		log.info("Order with id: {} is initiated", order.getId().getValue());
-		return new OrderCreatedEvent(order, ZonedDateTime.now(ZoneId.of(UTC)), orderCreatedEventDomainEventPublisher);
+		return new OrderCreatedEvent(order, ZonedDateTime.now(ZoneId.of(UTC)));
 	}
 
 	@Override
-	public OrderPaidEvent payOrder(final Order order,
-			final DomainEventPublisher<OrderPaidEvent> orderPaidEventDomainEventPublisher) {
+	public OrderPaidEvent payOrder(final Order order) {
 		order.pay();
 		log.info("Order with id: {} is paid", order.getId().getValue());
-		return new OrderPaidEvent(order, ZonedDateTime.now(ZoneId.of(UTC)), orderPaidEventDomainEventPublisher);
+		return new OrderPaidEvent(order, ZonedDateTime.now(ZoneId.of(UTC)));
 	}
 
 	@Override
@@ -45,11 +43,10 @@ public class OrderDomainServiceImpl implements OrderDomainService {
 	}
 
 	@Override
-	public OrderCancelledEvent cancelOrderPayment(final Order order, final List<String> failureMessages,
-			final DomainEventPublisher<OrderCancelledEvent> orderCancelledEventDomainEventPublisher) {
+	public OrderCancelledEvent cancelOrderPayment(final Order order, final List<String> failureMessages) {
 		order.initCancel(failureMessages);
 		log.info("Order payment is cancelling for order id: {}", order.getId().getValue());
-		return new OrderCancelledEvent(order, ZonedDateTime.now(ZoneId.of(UTC)), orderCancelledEventDomainEventPublisher);
+		return new OrderCancelledEvent(order, ZonedDateTime.now(ZoneId.of(UTC)));
 	}
 
 	@Override
