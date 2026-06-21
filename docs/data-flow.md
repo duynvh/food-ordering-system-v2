@@ -80,11 +80,13 @@ out of sync (no dual-write problem) and giving at-least-once delivery.
 ```mermaid
 flowchart TD
     A[Business transaction<br/>e.g. OrderCreateCommandHandler] -->|same TX| B[(Save domain state<br/>+ outbox row<br/>OutboxStatus=STARTED)]
-    B --> C{OutboxScheduler<br/>@Scheduled fixedDelay 10s}
-    C -->|poll STARTED rows| D[MessagePublisher]
+    B --> C{"OutboxScheduler<br/>@Scheduled fixedDelay 10s"}
+    C -->|poll STARTED rows<br/>SagaStatus STARTED/COMPENSATING| D[MessagePublisher]
     D -->|Avro| E{{Kafka topic}}
-    D -->|on ack callback| F[(Update outbox row<br/>OutboxStatus=COMPLETED)]
-    G[OutboxCleanerScheduler] -->|delete COMPLETED rows| B
+    E -.->|producer ack callback| D
+    D -->|ack ok| F[(Update outbox row<br/>OutboxStatus=COMPLETED)]
+    D -->|ack error| H[(Update outbox row<br/>OutboxStatus=FAILED)]
+    G{"OutboxCleanerScheduler<br/>@Scheduled cron @midnight"} -->|delete COMPLETED rows<br/>in terminal saga states| F
 ```
 
 Order-service maintains **two** outbox streams, each with its own scheduler + cleaner:
