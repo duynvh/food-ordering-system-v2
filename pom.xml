@@ -77,6 +77,12 @@
 
             <dependency>
                 <groupId>com.food.ordering.system</groupId>
+                <artifactId>order-ai</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>com.food.ordering.system</groupId>
                 <artifactId>payment-domain-core</artifactId>
                 <version>${project.version}</version>
             </dependency>
@@ -119,7 +125,27 @@
 
             <dependency>
                 <groupId>com.food.ordering.system</groupId>
-                <artifactId>order-ai</artifactId>
+                <artifactId>customer-domain-core</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.food.ordering.system</groupId>
+                <artifactId>customer-application-service</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.food.ordering.system</groupId>
+                <artifactId>customer-application</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.food.ordering.system</groupId>
+                <artifactId>customer-dataaccess</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.food.ordering.system</groupId>
+                <artifactId>customer-messaging</artifactId>
                 <version>${project.version}</version>
             </dependency>
             <dependency>

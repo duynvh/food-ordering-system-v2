@@ -1,15 +1,18 @@
-package com.food.ordering.system.order.service.dataaccess.customer.mapper;
+package com.food.ordering.system.customer.service.dataaccess.customer.mapper;
 
+import com.food.ordering.system.customer.service.dataaccess.customer.entity.CustomerEntity;
+import com.food.ordering.system.customer.service.domain.entity.Customer;
 import com.food.ordering.system.domain.valueobject.CustomerId;
-import com.food.ordering.system.order.service.dataaccess.customer.entity.CustomerEntity;
-import com.food.ordering.system.order.service.domain.entity.Customer;
 import org.springframework.stereotype.Component;
 
 @Component
 public class CustomerDataAccessMapper {
 
 	public Customer customerEntityToCustomer(CustomerEntity customerEntity) {
-		return new Customer(new CustomerId(customerEntity.getId()));
+		return new Customer(new CustomerId(customerEntity.getId()),
+				customerEntity.getUsername(),
+				customerEntity.getFirstName(),
+				customerEntity.getLastName());
 	}
 
 	public CustomerEntity customerToCustomerEntity(Customer customer) {
@@ -20,4 +23,5 @@ public class CustomerDataAccessMapper {
 				.lastName(customer.getLastName())
 				.build();
 	}
+
 }

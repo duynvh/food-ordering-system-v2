@@ -24,6 +24,7 @@ public class CustomerRepositoryImpl implements CustomerRepository {
 
 	@Override
 	public Customer save(final Customer customer) {
-		return null;
+		return customerDataAccessMapper.customerEntityToCustomer(
+				customerJpaRepository.save(customerDataAccessMapper.customerToCustomerEntity(customer)));
 	}
 }
