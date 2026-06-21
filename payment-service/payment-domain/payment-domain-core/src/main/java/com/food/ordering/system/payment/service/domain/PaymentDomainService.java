@@ -13,12 +13,8 @@ import com.food.ordering.system.payment.service.domain.event.PaymentFailedEvent;
 
 public interface PaymentDomainService {
 	PaymentEvent validateAndInitiatePayment(Payment payment, CreditEntry creditEntry,
-			List<CreditHistory> creditHistories, List<String> failureMessages,
-			final DomainEventPublisher<PaymentCompletedEvent> paymentCompletedEventDomainEventPublisher,
-			final DomainEventPublisher<PaymentFailedEvent> paymentFailedEventDomainEventPublisher);
+			List<CreditHistory> creditHistories, List<String> failureMessages);
 
 	PaymentEvent validateAndCancelPayment(Payment payment, CreditEntry creditEntry,
-			List<CreditHistory> creditHistories, List<String> failureMessages,
-			final DomainEventPublisher<PaymentCancelledEvent> paymentCancelledEventDomainEventPublisher,
-			final DomainEventPublisher<PaymentFailedEvent> paymentFailedEventDomainEventPublisher);
+			List<CreditHistory> creditHistories, List<String> failureMessages);
 }
